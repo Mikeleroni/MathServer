@@ -25,9 +25,9 @@ export default class MathsController extends Controller {
         let x = param.x;
         let y = param.y;
         let n = param.n;
-        if(op != undefined)
+        let nbParam = Object.keys(param).length
+        if(op != undefined && this.HttpContext.path.queryString.includes('x') && this.HttpContext.path.queryString.includes('y') && nbParam == 3)
         {
-            
             if(op == " " )
             {
                 param.op = "+";
@@ -66,8 +66,9 @@ export default class MathsController extends Controller {
                 }
                 
             }
+            return this.HttpContext.response.JSON(param);
         }
-        if(op != undefined){
+        if(op != undefined && this.HttpContext.path.queryString.includes('n') && nbParam == 2 && param.n % 1 == 0){
             if(op == "!")
             {
                 if(parseInt(param.n) <= 0)
@@ -98,7 +99,7 @@ export default class MathsController extends Controller {
         {
             param.error = "Manque des parametres";
         }
-        return this.HttpContext.response.JSON(null);
+        return this.HttpContext.response.JSON(param);
     }
     factorial(n) {
         if (n === 0 || n === 1) {
